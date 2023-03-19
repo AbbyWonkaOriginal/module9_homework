@@ -1,0 +1,52 @@
+<html>
+<head>
+<script>
+function submit() {
+  // Получить значения из input
+  let width = document.getElementById("width").value;
+  let height = document.getElementById("height").value;
+  // Проверить, что значения являются числами и в диапазоне от 100 до 300
+  if (isNaN(width) || isNaN(height) || width < 100 || width > 300 || height < 100 || height > 300) {
+    // Вывести сообщение об ошибке
+    document.getElementById("message").innerHTML = "Одно из чисел вне диапазона от 100 до 300";
+    // Очистить картинку
+    document.getElementById("image").src = "";
+  } else {
+    // Сформировать URL для запроса
+    let url = "https://picsum.photos/" + width + "/" + height;
+    // Сделать запрос с помощью fetch
+    fetch(url)
+      .then(response => {
+        // Проверить, что ответ успешный
+        if (response.ok) {
+          // Вывести картинку на экран
+          document.getElementById("image").src = response.url;
+          // Очистить сообщение об ошибке
+          document.getElementById("message").innerHTML = "";
+        } else {
+          // Вывести сообщение об ошибке
+          document.getElementById("message").innerHTML = "Произошла ошибка при запросе: " + response.status;
+          // Очистить картинку
+          document.getElementById("image").src = "";
+        }
+      })
+      .catch(error => {
+        // Вывести сообщение об ошибке
+        document.getElementById("message").innerHTML = "Произошла ошибка при запросе: " + error;
+        // Очистить картинку
+        document.getElementById("image").src = "";
+      });
+  }
+}
+</script>
+</head>
+<body>
+<h1>Приложение для получения случайной картинки</h1>
+<p>Введите ширину и высоту картинки в диапазоне от 100 до 300:</p>
+<input type="text" id="width" placeholder="Ширина">
+<input type="text" id="height" placeholder="Высота">
+<button onclick="submit()">Submit</button>
+<p id="message"></p>
+<img id="image">
+</body>
+</html>
